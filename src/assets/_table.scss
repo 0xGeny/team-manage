@@ -1,0 +1,18 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    & td,
+    & th {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        text-align: center;
+        font-size: 16px;
+    }
+    & th {
+        background-color: rgb(189, 189, 209) !important;
+        color: #ffffff;
+    }
+    & tbody tr:nth-child(even) {
+        background-color: #f5f5f5;
+    }
+}
