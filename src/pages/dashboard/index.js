@@ -47,6 +47,7 @@ const rowsPerPage = 15;
 
 const rows = [];
 const groupdata = [];
+const roledata = [];
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -244,11 +245,16 @@ function Dashboard() {
                                 rows.push(createData(i + 1, temp[i].name, temp[i].role, temp[i].group, temp[i].ip_address, temp[i].mac_address, temp[i].created));
                             }
                             let temp1 = JSON.parse(res.data.group);
+                            delete roledata[0];
                             for (let i = 0; i < groupdata.length; i++) {
                                 delete groupdata[i];
+                                delete roledata[i + 1];
                             }
+
+                            roledata.push({ name: 'Admin' });
                             for (let i = 0; i < temp1.length; i++) {
                                 groupdata.push({ name: temp1[i].name })
+                                roledata.push({ name: 'Boss of ' + temp1[i].name });
                             }
                             handleRequestSort('asc');
                         }
@@ -555,13 +561,19 @@ const EditDialog = ({ isOpen, onDialogClose, onSubmitEdit, recordData, fields })
                         style={{ paddingTop: '10px', marginTop: '10px' }}
                         onChange={({ target: { value } }) => handleEdit(fields[1].key, value)}
                     />
-                    <TextField
-                        key={fields[2].key}
-                        defaultValue={recordData[fields[2].key]}
-                        label={fields[2].title}
-                        style={{ paddingTop: '10px', marginTop: '10px' }}
+                    <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Role"
                         onChange={({ target: { value } }) => handleEdit(fields[2].key, value)}
-                    />
+                    >
+                        {
+                            roledata.map(({ name }) => (
+                                <MenuItem value={name}>{name}</MenuItem>
+                            ))
+                        }
+                    </Select>
                     <InputLabel id="demo-simple-select-label">Group</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
@@ -599,12 +611,19 @@ const CreateDialog = ({ isOpen, onDialogClose, onSubmitCreate, recordData, field
                         style={{ paddingTop: '10px', marginTop: '10px' }}
                         onChange={({ target: { value } }) => handleCreate(fields[1].key, value)}
                     />
-                    <TextField
-                        key={fields[2].key}
-                        label={fields[2].title}
-                        style={{ paddingTop: '10px', marginTop: '10px' }}
+                    <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Role"
                         onChange={({ target: { value } }) => handleCreate(fields[2].key, value)}
-                    />
+                    >
+                        {
+                            roledata.map(({ name }) => (
+                                <MenuItem value={name}>{name}</MenuItem>
+                            ))
+                        }
+                    </Select>
                     {/* <TextField
                         key={fields[3].key}
                         label={fields[3].title}
