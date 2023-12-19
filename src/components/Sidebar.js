@@ -45,6 +45,7 @@ const SidebarWrap = styled.div`
 const Logout =
 {
   title: 'Logout',
+  path: '/temp',
   icon: <FaIcons.FaSignOutAlt />,
 
   iconClosed: <RiIcons.RiArrowDownSFill />,

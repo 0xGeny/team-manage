@@ -6,6 +6,7 @@ import Layout from './pages/layout'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Group from './pages/group';
 import Role from './pages/role'
+import Temp from './pages/temp'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path='group' element={<Group />} />
           <Route path='role' element={<Role />} />
+          <Route path='temp' element={<Temp />} />
         </Route>
       </Routes>
     </BrowserRouter>
