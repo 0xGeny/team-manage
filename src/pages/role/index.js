@@ -29,6 +29,7 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import { Dialog, DialogTitle, DialogContent, FormGroup, TextField } from "@mui/material";
 import Sidebar from "../../components/Sidebar";
 import createSvgIcon from "@mui/material";
+import { Select, MenuItem, InputLabel } from "@mui/material";
 
 function createData(id, role) {
     return {
@@ -39,6 +40,7 @@ function createData(id, role) {
 const rowsPerPage = 15;
 
 const rows = [];
+const groupdata = [];
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -197,6 +199,14 @@ function Role() {
                             for (let i = 0; i < temp.length; i++) {
                                 rows.push(createData(i + 1, temp[i].name));
                             }
+                            let temp1 = JSON.parse(res.data.group);
+                            for (let i = 0; i < groupdata.length; i++) {
+                                delete groupdata[i];
+                            }
+                            groupdata.push({ name: 'Admin' })
+                            for (let i = 0; i < temp1.length; i++) {
+                                groupdata.push({ name: 'Boss of ' + temp1[i].name })
+                            }
                             handleRequestSort('asc');
                         }
                     })
@@ -258,7 +268,7 @@ function Role() {
     };
 
     const handleDelete = (index) => {
-        axios.post("http://192.168.40.33:7150/delete/", { name: rows[index - 1].name })
+        axios.post("http://192.168.40.33:7150/role_delete/", { name: rows[index - 1].role })
             .then((res) => {
                 if (res.data.message === "success_delete") {
                     window.location.reload(true);
@@ -292,12 +302,11 @@ function Role() {
         onEditDialogOpen = (id) => (setRecordIdToEdit(id), setEditDialogOn(true)),
         handleEdit = (data) => {
             setEditDialogOn(false)
-            let fname = rows.at(data.id - 1).group;
+            let fname = rows.at(data.id - 1).role;
             const editedItemIdx = rows.findIndex(({ id }) => id == data.id)
             rows.splice(editedItemIdx, 1, data);
             // window.location.reload();
-
-            axios.post("http://192.168.40.33:7150/role_edit/", { fname: fname, name: data.role})
+            axios.post("http://192.168.40.33:7150/role_edit/", { fname: fname, name: data.role })
                 .then((res) => {
                     if (res.data.message === "success_roleedit") {
                         window.location.reload(true);
@@ -451,13 +460,19 @@ const EditDialog = ({ isOpen, onDialogClose, onSubmitEdit, recordData, fields })
             <DialogTitle>Edit record</DialogTitle>
             <DialogContent>
                 <FormGroup>
-                    <TextField
-                        key={fields[1].key}
-                        label={fields[1].title}
-                        defaultValue={recordData[fields[1].key]}
-                        style={{ paddingTop: '10px', marginTop: '10px' }}
-                        onChange={({ target: { value } }) => {handleEdit(fields[1].key, value);}}
-                    />
+                    <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Role"
+                        onChange={({ target: { value } }) => handleEdit(fields[1].key, value)}
+                    >
+                        {
+                            groupdata.map(({ name }) => (
+                                <MenuItem value={name}>{name}</MenuItem>
+                            ))
+                        }
+                    </Select>
                 </FormGroup>
                 <FormGroup>
                     <Button onClick={() => onSubmitEdit({ ...recordData, ...data })}>Submit</Button>
@@ -476,12 +491,26 @@ const CreateDialog = ({ isOpen, onDialogClose, onSubmitCreate, recordData, field
             <DialogTitle>Create record</DialogTitle>
             <DialogContent>
                 <FormGroup>
-                    <TextField
+                    {/* <TextField
                         key={fields[1].key}
                         label={fields[1].title}
                         style={{ paddingTop: '10px', marginTop: '10px' }}
                         onChange={({ target: { value } }) => {handleCreate(fields[1].key, value);}}
-                    />
+                    /> */}
+                    
+                    <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Role"
+                        onChange={({ target: { value } }) => handleCreate(fields[1].key, value)}
+                    >
+                        {
+                            groupdata.map(({ name }) => (
+                                <MenuItem value={name}>{name}</MenuItem>
+                            ))
+                        }
+                    </Select>
                 </FormGroup>
                 <FormGroup>
                     <Button onClick={() => onSubmitCreate({ ...recordData, ...data })}>Submit</Button>
