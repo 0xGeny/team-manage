@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Group from './pages/group';
 import Role from './pages/role'
 import Temp from './pages/temp'
+import Screen from './pages/screen';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path='group' element={<Group />} />
           <Route path='role' element={<Role />} />
           <Route path='temp' element={<Temp />} />
+          <Route path='screen' element={<Screen />} />
         </Route>
       </Routes>
     </BrowserRouter>

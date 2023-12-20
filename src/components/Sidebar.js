@@ -7,8 +7,8 @@ import { SidebarData } from './SidebarData';
 import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
 import * as RiIcons from 'react-icons/ri';
-import { Button } from 'bootstrap';
-
+import { Image } from '@mui/icons-material';
+import logo from '../assets/asdf.png'
 const Nav = styled.div`
   background: #15171c;
   height: 80px;
@@ -61,6 +61,7 @@ const Sidebar = () => {
         <Nav>
           <h1 style={{ color: 'white', padding: '50%', fontSize: '40px' }}>TaskView</h1>
         </Nav>
+
         <SidebarNav sidebar={sidebar}>
           <SidebarWrap>
             <NavIcon>

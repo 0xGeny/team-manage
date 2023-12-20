@@ -55,7 +55,7 @@ export const SidebarData = [
     subNav: [
       {
         title: 'Screens',
-        path: '/',
+        path: '/screen',
         icon: <IoIcons.IoIosPaper />
       },
       {
